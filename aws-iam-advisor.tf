@@ -24,18 +24,16 @@ module "lambda_function" {
   timeout                = var.lambda_timeout
 
   environment_variables = {
+    "DRYRUN"                                = var.dryrun,
     "EMAIL_SUBJECT"                         = var.email_subject,
     "EMAIL_CHARSET"                         = var.email_charset,
     "SENDER_EMAIL"                          = var.sender_email,
-    "DRYRUN"                                = var.dryrun,
-    "AWSREGION"                             = var.awsregion,
-    "ACCESS_KEY_AGE_LIMIT_DAYS"             = var.access_key_age_limit,
-    "ACCESS_KEY_INACTIVE_GRACE_PERIOD_DAYS" = var.access_key_age_grace_period,
-    "IAM_USER_COUNT"                        = var.number_of_iam_users,
-    "ADMIN_EMAIL_AS_CC"                     = var.send_cc_email_admin,
     "ADMIN_EMAIL"                           = var.admin_email,
+    "AWSREGION"                             = var.awsregion,
+    "CREDENTIAL_AGE_LIMIT"                  = var.credential_age_limit,
+    "ADVANCED_NOTIFICATION_DAYS"            = var.advanced_notification_days,
     "SES_ARN"                               = var.ses_arn,
-    "IAM_USER_EXCLUDE_CSV"                  = var.iam_to_exclue
+    "IAM_USER_EXCLUDE_CSV"                  = var.iam_to_exclude
   }
 }
 

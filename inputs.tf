@@ -5,7 +5,7 @@ variable "ses_arn" {
 variable "email_subject" {
   type        = string
   description = "The Email Subject"
-  default     = "AWS IAM - Access Key Security."
+  default     = "AWS IAM - Credential Security."
 }
 variable "email_charset" {
   type        = string
@@ -26,31 +26,21 @@ variable "awsregion" {
   description = "The default AWS Region to use in the lambda."
   default     = "eu-west-1"
 }
-variable "access_key_age_limit" {
+variable "credential_age_limit" {
   type        = string
-  description = "How old can the AWS Access Key be before the email notice is issued."
+  description = "Age limit of the credentials in Days."
   default     = "90"
 }
-variable "access_key_age_grace_period" {
+variable "advanced_notification_days" {
   type        = string
-  description = "Grace period after the AWS Access Key is over the age limit and then it's deactivated."
+  description = "Notification period before the Credential is nearing age limit and then it's deactivated, in Days."
   default     = "15"
-}
-variable "number_of_iam_users" {
-  type        = string
-  description = "An estimate of IAM users to check. (This is required until the paging is implemented.)."
-  default     = "100"
-}
-variable "send_cc_email_admin" {
-  type        = bool
-  description = "Send a copy to the admin. If the IAM user isn't an email address, the admin is notified by default."
-  default     = false
 }
 variable "admin_email" {
   type        = string
   description = "The Administrators Email Address."
 }
-variable "iam_to_exclue" {
+variable "iam_to_exclude" {
   type        = string
   description = "The IAM users to exclude from the deactivation."
   default     = "\"example\",\"example\""
