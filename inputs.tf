@@ -5,7 +5,7 @@ variable "ses_arn" {
 variable "email_subject" {
   type        = string
   description = "The Email Subject"
-  default     = "AWS IAM - Access Key Security."
+  default     = "AWS IAM - Credential Security."
 }
 variable "email_charset" {
   type        = string
@@ -28,12 +28,12 @@ variable "awsregion" {
 }
 variable "credential_age_limit" {
   type        = string
-  description = "How old can the AWS Access Key be before the email notice is issued."
+  description = "Age limit of the credentials in Days."
   default     = "90"
 }
 variable "advanced_notification_days" {
   type        = string
-  description = "Grace period after the Credential is nearing age limit before then it's deactivated."
+  description = "Notification period before the Credential is nearing age limit and then it's deactivated, in Days."
   default     = "15"
 }
 variable "admin_email" {
