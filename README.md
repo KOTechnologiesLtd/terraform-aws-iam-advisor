@@ -3,19 +3,23 @@ KO Technologies
 https://www.kotechnologies.co.uk
 
 ## Information
-The aws-iam-advisor will iterate through the IAM users and check their AWS access key age.\
-The following will apply if the IAM user is in the email address format.\
-If the key is over the age limit and email notification will be sent to the users email address.\
-If the key remains in the IAM users profile for more than the age limit + grace period, the key becomes inactive.\
-The following will apply if the IAM user is not in the email address format.\
-The adminstrator will recieve and email for the IAM users access keys.
-
-## Version 2
+The aws-iam-advisor will iterate through the IAM users and check their AWS IAM Credentials.\
 The version 2 release changes the mechanism by which the Access Key information is obtained. V1 uses the aws api,\
-whilst v2 now uses the credentials report.\
-Credentials reports can only be generated every 4 hours, so don't schedule this function run any sooner.\
+whilst v2 now uses the credentials report for a more informative and secure experience.\
+<u>Credentials reports can only be generated every 4 hours</u>, so don't schedule this function run any sooner.\
 The version 2 release also provides the capability to inform users on password expiry and signing certificate deactivation.\
 The policy for the lambda function has also been tightened.
+
+## How it works
+The Lambda function is trigerred via cloudwatch cron event.
+The lambda function will generate a credentials report and iterate the information.
+Should an IAM credential show an expiring set of data, the user will be notified of their IAM health.
+### IAM with email format
+The following will apply if the IAM user is in the email address format. xxx@domain.com\
+If the any of the IAM credentials for a given IAM is approaching the age limit an email notification will be sent to the <u>users email address</u>.
+### IAM without email format
+The following will apply if the IAM user is <u>not</u> in the email address format.\
+If the any of the IAM credentials for a given IAM is approaching the age limit an email notification will be sent to the <u>administrators email address</u>.
 
 ## Testing
 Application tested with terraform 1.3.7.
@@ -27,11 +31,11 @@ The aws-iam-advisor is built with the go 1.18 and is supplied inside the main.zi
 The following information about this module is created via terraform-docs.
 ### Ensure that the dryrun is set to false so that the function works.
 
-## Example
+## Example Terraform
 ```hcl
 module "aws_iam_advisor" {
   source       = "KOTechnologiesLtd/iam-advisor/aws"
-  version      = "2.0.0"
+  version      = "2.0.1"
   ses_arn      = "arn:aws:ses:eu-west-2:XXXXXXXXXXXXXX:identity/XXXX@XXXXXXX.co.uk"
   sender_email = "XXXX@XXXXXXX.co.uk"
   admin_email  = "XXXX@XXXXXXX.co.uk"
@@ -85,3 +89,16 @@ No requirements.
 ## Outputs
 
 No outputs.
+
+
+## Email Format
+
+| Colour | Description |
+|------|---------|
+| GREEN | Credentials meet the requirements. |
+| ORANGE | Credentials will soon be deactivated. |
+| RED | Credentials have been deactivated. |
+
+Example of the email report.
+
+<html><body><h1>AWS IAM Advisor</h1><h2><u>Some of your credentials are due to expire. Ensure they are rotated before they are deactivated.</u></h2><table><tr><th>User</th><th>Credential</th><th>Limit(Days)</th><th>Age(Days)</th><th>Expiry - Days Remaining</th></tr><tr><td>user@domain.co.uk</td><td>AWS Console Password - (MFA Enabled: false)</td><td>90</td><td>75.754487</td><td style="background-color:orange;color:white;">65.245513</td></tr><tr><td>user@domain.co.uk</td><td>AWS Access Key 1</td><td>90</td><td>313.915610</td><td style="background-color:red;color:white;">-223.915610 deactivated</td></tr><tr><td>user@domain.co.uk</td><td>AWS Access Key 2</td><td>90</td><td>46.842708</td><td style="background-color:green;color:white;">43.157292</td></tr><tr><td>user@domain.co.uk</td><td>AWS Cert 1</td><td>90</td><td>76.805116</td><td style="background-color:orange;color:white;">64.194884</td></tr><tr><td>user@domain.co.uk</td><td>AWS Cert 2</td><td>90</td><td>25.805243</td><td style="background-color:green;color:white;">64.194757</td></tr></table></body></html><p></p>Created by KO Technologies an AWS Consulting Partner - <a href="https://www.kotechnologies.co.uk">KO Technologies<p></p></html>
