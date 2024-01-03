@@ -12,8 +12,8 @@ module "lambda_function" {
 
   function_name          = "aws-iam-advisor"
   description            = "AWS IAM Advisor"
-  handler                = "main"
-  runtime                = "go1.x"
+  handler                = "bootstrap"
+  runtime                = "provided.al2"
   memory_size            = "128"
   attach_policy_json     = true
   policy_json            = data.template_file.awsIamAdvisorPolicy.rendered

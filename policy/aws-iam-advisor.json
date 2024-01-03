@@ -19,7 +19,8 @@
                 "iam:ListGroups",
                 "iam:ListMFADeviceTags",
                 "sts:GetSessionToken",
-                "iam:UpdateSigningCertificate"
+                "iam:UpdateSigningCertificate",
+                "iam:ListSigningCertificates"
             ],
             "Resource": "*"
         },
